@@ -1,22 +1,71 @@
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Buku</title>
-</head>
-<body>
-    @if ($buku)
-        <h1>Detail Buku</h1>
+@extends('layouts.app')
 
-        <p>Judul: {{ $buku['judul'] }}</p>
-        <p>Penulis: {{ $buku['penulis'] }}</p>
+@section('title', ($buku['judul'] ?? 'Manga Tidak Ditemukan') . ' - MangaStore')
+
+@section('content')
+
+    @if ($buku)
+
+        <div class="row g-4 align-items-start">
+
+            <div class="col-md-4">
+                <img
+                    src="{{ asset('images/' . $buku['gambar']) }}"
+                    class="sampul-detail rounded-4 shadow-sm"
+                    alt="Sampul {{ $buku['judul'] }}">
+            </div>
+
+            <div class="col-md-8">
+
+                <span class="badge text-bg-primary mb-3">
+                    Koleksi Manga
+                </span>
+
+                <h1 class="fw-bold">
+                    {{ $buku['judul'] }}
+                </h1>
+
+                <p class="text-muted">
+                    Penulis: {{ $buku['penulis'] }}
+                </p>
+
+                <hr>
+
+                <p class="mb-1">Harga manga</p>
+
+                <h2 class="harga-buku mb-4">
+                    Rp{{ number_format($buku['harga'], 0, ',', '.') }}
+                </h2>
+
+                <p>
+                    Manga ini tersedia dalam katalog MangaStore.
+                    Kembali ke katalog untuk melihat koleksi lainnya.
+                </p>
+
+                <a
+                    href="{{ url('/buku') }}"
+                    class="btn btn-outline-primary mt-2">
+                    &larr; Kembali ke Katalog
+                </a>
+
+            </div>
+        </div>
+
     @else
-        <h1>Buku Tidak Ditemukan</h1>
-        <p>Buku dengan ID {{ $id }} tidak tersedia.</p>
+
+        <div class="alert alert-warning">
+            <h4 class="alert-heading">Manga Tidak Ditemukan</h4>
+
+            <p class="mb-0">
+                Manga dengan ID {{ $id }} tidak tersedia di katalog.
+            </p>
+        </div>
+
+        <a href="{{ url('/buku') }}" class="btn btn-primary">
+            Kembali ke Katalog
+        </a>
+
     @endif
 
-    <a href="/buku">Kembali ke Daftar Buku</a>
-</body>
-</html>
+@endsection
